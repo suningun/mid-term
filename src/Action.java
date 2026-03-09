@@ -10,9 +10,16 @@ public class Action {
                 "4: Return Book\n" +
                 "5: Overdue List\n" +
                 "6: Logout\n" +
-                "7: Exit");
+                "7: Exit\n");
         System.out.println ("Enter your choice: ");
         int action = scanner.nextInt();
+        switch (action){
+            case 1:
+                break;
+
+            case 2:
+
+        }
 
 
 
