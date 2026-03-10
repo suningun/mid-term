@@ -262,7 +262,7 @@ public class Main {
         System.out.println("3. Delete Member");
         System.out.println("4. Search Member");
         System.out.println("5. View All Members");
-
+        System.out.print("Enter choice: ");
         int action = scanner.nextInt();
         scanner.nextLine();
 
