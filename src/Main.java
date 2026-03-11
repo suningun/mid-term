@@ -103,12 +103,14 @@ public class Main {
     // LOGIN SYSTEM
     static void login() {
 
-        String correctUsername = "h";
-        String correctPassword = "l";
+        String correctUsername = "admin";
+        String correctPassword = "admin@168";
 
         int attempts = 3;
 
-        System.out.println("===== Library Management System =====");
+        System.out.println("\n==============================");
+        System.out.println("  LIBRARY MANAGEMENT SYSTEM");
+        System.out.println("==============================");
 
         while (attempts > 0) {
 
@@ -241,6 +243,7 @@ public class Main {
                 } else {
                     System.out.println("Book not found.");
                 }
+                break;
             case 5:
 
                 System.out.println("\n===== Book List =====");
@@ -262,7 +265,7 @@ public class Main {
                         System.out.println((i + 1) + ". " + book + " - Available");
                     }
                 }
-                bookManagement();
+                break;
             case 6:
                 return;
         }
@@ -370,6 +373,7 @@ public class Main {
                         System.out.println((i + 1) + ". " + member + " - No borrowed book");
                     }
                 }
+                break;
             case 6:
                 return;
 
@@ -439,36 +443,48 @@ public class Main {
         System.out.print("Enter member name: ");
         String name = scanner.nextLine();
 
-        if (!hasBorrowed || !name.equalsIgnoreCase(borrowedUserName)) {
+        boolean found = false;
 
-            System.out.println("No record found.");
+        for (int i = 0; i < borrowers.size(); i++) {
 
-        } else {
+            if (borrowers.get(i).equalsIgnoreCase(name)) {
 
-            LocalDate today = LocalDate.now();
+                String book = borrowedBooks.get(i);
+                LocalDate borrowDate = borrowDates.get(i);
+                LocalDate dueDate = borrowDate.plusDays(14);
+                LocalDate today = LocalDate.now();
 
-            if (today.isAfter(savedDueDate)) {
+                if (today.isAfter(dueDate)) {
 
-                long daysLate = java.time.temporal.ChronoUnit.DAYS.between(savedDueDate, today);
+                    long daysLate = java.time.temporal.ChronoUnit.DAYS.between(dueDate, today);
 
-                System.out.println("Overdue!");
-                System.out.println("Days late: " + daysLate);
+                    System.out.println("Overdue!");
+                    System.out.println("Days late: " + daysLate);
 
-            } else {
+                } else {
 
-                System.out.println("Returned successfully.");
+                    System.out.println("Returned successfully.");
+                }
+
+                // return book to library
+                bookList.add(book);
+
+                // remove borrow record
+                borrowers.remove(i);
+                borrowedBooks.remove(i);
+                borrowDates.remove(i);
+
+                found = true;
+                break;
             }
-
-            bookList.add(borrowedBookTitle);
-
-            hasBorrowed = false;
-            borrowedUserName = "";
-            borrowedBookTitle = "";
-            savedDueDate = null;
         }
+
+        if (!found) {
+            System.out.println("No record found.");
+        }
+
         pause();
     }
-
     // OVERDUE CHECK
     static void checkOverdue() {
 
@@ -514,5 +530,6 @@ public class Main {
                             " | Borrow Date: " + borrowDates.get(i)
             );
         }
+        pause();
     }
 }
